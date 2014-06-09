@@ -24,8 +24,5 @@ ofxCvImage& warpWindow::getImage(){
 }
 
 void warpWindow::warp(){
-    for(int i=0;i<4;i++){
-        cout<<srcPoints[i]<<endl;
-    }
     warpIntoMe(*origImage,srcPoints,dstPoints);
 }

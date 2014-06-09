@@ -11,7 +11,7 @@ void ofApp::setup(){
 
     ww.allocate(200,100);
     ww.setImage(origImage);
-    we.windows.push_back(ww);
+    we.addWindow(ww);
 
     we.displayRect.set(200,10,400,400);
 }

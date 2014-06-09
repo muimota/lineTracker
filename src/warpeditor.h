@@ -6,8 +6,10 @@
 class warpEditor
 {
     public:
-        vector<warpWindow>  windows;
+        vector<warpWindow*>  windows;
         ofRectangle displayRect;
+
+        void addWindow(warpWindow& ww);
         void mousePressed(int x, int y, int button);
         void mouseDragged(int x, int y, int button);
         void mouseReleased(int x, int y, int button);
