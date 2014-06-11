@@ -8,11 +8,11 @@ void ofApp::setup(){
 
     origImage.allocate(640,480);
 
-
-    ww.allocate(200,100);
-    ww.setImage(origImage);
-    we.addWindow(ww);
-
+    //ww.allocate(50,200);
+    //ww.setImage(origImage);
+    //we.addWindow(ww);
+    we.setImage(origImage);
+    we.loadFile("test.xml");
     we.displayRect.set(200,10,400,400);
 }
 
@@ -21,7 +21,10 @@ void ofApp::update(){
         player.update();
         if(player.isFrameNew()){
             origImage.setFromPixels(player.getPixels(), player.getWidth(),player.getHeight());
-            ww.warp();
+
+            for (vector<warpWindow*>::iterator it = we.windows.begin();it != we.windows.end();it++){
+                (*it)->warp();
+            }
         }
 }
 
@@ -29,12 +32,19 @@ void ofApp::update(){
 void ofApp::draw(){
     player.draw(0,0,133,100);
     we.draw();
-    ww.draw(0,100);
+    ofPoint offset(100,400);
+    for(int i=0;i<we.windows.size();i++){
+       warpWindow& ww = *we.windows[i];
+       ww.draw(offset);
+       offset.x+=ww.getWidth();
+    }
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
+    if(key=='s'){
+        we.saveFile("test.xml");
+    }
 }
 
 //--------------------------------------------------------------

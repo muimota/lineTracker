@@ -9,15 +9,20 @@ class warpEditor
         vector<warpWindow*>  windows;
         ofRectangle displayRect;
 
+        warpEditor();
         void addWindow(warpWindow& ww);
+        void loadFile(string filename);
+        void saveFile(string filename);
+        void setImage(ofxCvImage& image);
         void mousePressed(int x, int y, int button);
         void mouseDragged(int x, int y, int button);
         void mouseReleased(int x, int y, int button);
         void draw();
     protected:
-        const int handleRadius  = 10;
+        ofxCvImage *origImage;
+        int handleRadius;
         warpWindow  *selectedWindow;
-        ofPoint     *selectedHandle = NULL;
+        ofPoint     *selectedHandle;
         ofPoint handleOffset;
 };
 

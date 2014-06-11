@@ -1,0 +1,26 @@
+<windows>
+	<window width="200" height="200">
+		<vertex x="10"  y="10" />
+		<vertex x="110" y="10" />
+		<vertex x="110" y="110"/>
+		<vertex x="10"  y="110"/>
+	</window>
+	<window width="200" height="200">
+		<vertex x="10"  y="10" />
+		<vertex x="110" y="10" />
+		<vertex x="110" y="110"/>
+		<vertex x="10"  y="110"/>
+	</window>
+	<window width="200" height="200">
+		<vertex x="10"  y="10" />
+		<vertex x="110" y="10" />
+		<vertex x="110" y="110"/>
+		<vertex x="10"  y="110"/>
+	</window>
+	<window width="200" height="200">
+		<vertex x="10"  y="10" />
+		<vertex x="110" y="10" />
+		<vertex x="110" y="110"/>
+		<vertex x="10"  y="110"/>
+	</window>
+</windows>		
