@@ -2,7 +2,7 @@
 
 warpEditor::warpEditor(){
     selectedHandle = NULL;
-    handleRadius   = 10;
+    handleRadius   = 5;
 }
 
 void warpEditor::mousePressed(int x, int y, int button){
@@ -139,35 +139,5 @@ void warpEditor::saveFile(string filename){
 
     }
      windowsXml.save(filename);
-/*
-    if(windowsXml.getNumChildren()>0){
-        windowsXml.setToChild(0);
-        int windowIndex = 0;
-        do{
-            int wwidth,wheight;
-            istringstream (windowsXml.getAttribute("width")) >>wwidth;
-            istringstream (windowsXml.getAttribute("height"))>>wheight;
-
-            warpWindow *ww = warpWindow[windowIndex];
-
-
-           if(windowsXml.getNumChildren()>0){
-                windowsXml.setToChild(0);
-                int vertexIndex = 0;
-                do{
-                    ofPoint v;
-                    istringstream (windowsXml.getAttribute("x"))>>v.x;
-                    istringstream (windowsXml.getAttribute("y"))>>v.y;
-                    ww->srcPoints[vertexIndex]=v;
-                    cout<<"["<<vertexIndex<<"] "<<v<<endl;
-                    vertexIndex ++ ;
-
-                }while(windowsXml.setToSibling() && vertexIndex<4);
-                windowsXml.setToParent();
-            }
-            windowIndex++;
-        }while(windowsXml.setToSibling());
-    }
-*/
 }
 

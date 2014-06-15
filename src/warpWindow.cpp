@@ -2,7 +2,7 @@
 
 void warpWindow::allocate(int w, int h){
     //
-    ofxCvColorImage::allocate(w,h);
+    ofxCvGrayscaleImage::allocate(w,h);
     dstPoints[0] = ofPoint(0,0);
     dstPoints[1] = ofPoint(w,0);
     dstPoints[2] = ofPoint(w,h);

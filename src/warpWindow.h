@@ -2,7 +2,7 @@
 #define WARPWINDOW_H
 #include "ofxOpenCv.h"
 
-class warpWindow : public ofxCvColorImage{
+class warpWindow : public ofxCvGrayscaleImage{
 
     protected:
         ofxCvImage *origImage;

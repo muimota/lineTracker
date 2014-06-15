@@ -6,12 +6,10 @@ void ofApp::setup(){
     player.loadMovie("test04.mp4");
     player.play();
 
-    origImage.allocate(640,480);
+    videoImage.allocate(640,480);
+    videoGrayImage.allocate(640,480);
 
-    //ww.allocate(50,200);
-    //ww.setImage(origImage);
-    //we.addWindow(ww);
-    we.setImage(origImage);
+    we.setImage(videoGrayImage);
     we.loadFile("test.xml");
     we.displayRect.set(200,10,400,400);
 }
@@ -20,8 +18,9 @@ void ofApp::setup(){
 void ofApp::update(){
         player.update();
         if(player.isFrameNew()){
-            origImage.setFromPixels(player.getPixels(), player.getWidth(),player.getHeight());
 
+            videoImage.setFromPixels(player.getPixels(), player.getWidth(),player.getHeight());
+            videoGrayImage = videoImage;
             for (vector<warpWindow*>::iterator it = we.windows.begin();it != we.windows.end();it++){
                 (*it)->warp();
             }

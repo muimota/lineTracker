@@ -8,11 +8,14 @@
 class ofApp : public ofBaseApp{
     private:
             ofVideoPlayer   player;
-            ofxCvColorImage origImage,warpImage;
+            ofxCvColorImage videoImage;
+            ofxCvGrayscaleImage videoGrayImage;
+
             ofPoint         srcPoints[4];
             ofPoint         dstPoints[4];
             warpEditor      we;
-            warpWindow      ww;
+            ofxCvGrayscaleImage bgImage;
+
 
 	public:
 		void setup();
