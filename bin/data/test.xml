@@ -1,23 +1,23 @@
 <windows>
-	<window height="200" width="50">
+	<window height="240" width="50">
 		<vertex x="29" y="91"/>
 		<vertex x="184" y="87"/>
 		<vertex x="151" y="457"/>
 		<vertex x="5" y="452"/>
 	</window>
-	<window height="200" width="50">
+	<window height="240" width="50">
 		<vertex x="216" y="90"/>
 		<vertex x="273" y="92"/>
 		<vertex x="281" y="458"/>
 		<vertex x="173" y="458"/>
 	</window>
-	<window height="200" width="50">
+	<window height="240" width="50">
 		<vertex x="290" y="89"/>
 		<vertex x="380" y="85"/>
 		<vertex x="394" y="450"/>
 		<vertex x="297" y="452"/>
 	</window>
-	<window height="200" width="50">
+	<window height="240" width="50">
 		<vertex x="417" y="88"/>
 		<vertex x="511" y="89"/>
 		<vertex x="527" y="428"/>

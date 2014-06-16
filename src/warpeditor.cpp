@@ -39,12 +39,17 @@ void warpEditor::mouseReleased(int x, int y, int button){
     }
     selectedHandle = NULL;
 }
+
 void warpEditor::setImage(ofxCvImage& image){
     origImage = &image;
     for (vector<warpWindow*>::iterator it = windows.begin();it != windows.end();it++){
         (*it)->setImage(image);
     }
 }
+/*
+ Draws editor inside the displayRect
+
+*/
 void warpEditor::draw()
 {
 
