@@ -1,7 +1,9 @@
 <Parameters>
-	<Threshold>12</Threshold>
-	<Minimum_Blob_Area>30</Minimum_Blob_Area>
-	<Maximum_Blob_Area>90</Maximum_Blob_Area>
+	<Threshold>24</Threshold>
+	<Minimum_Blob_Area>80</Minimum_Blob_Area>
+	<Maximum_Blob_Area>190</Maximum_Blob_Area>
 	<Background_Substraction>0</Background_Substraction>
 <Parameters/>
+<Erode>0</Erode>
+	<Dilate>0</Dilate>
 </Parameters>

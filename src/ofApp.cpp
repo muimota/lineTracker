@@ -10,13 +10,21 @@ void ofApp::setup(){
     player.loadMovie("test04.mp4");
     player.play();
 
+    //if using camera v4l2-ctl -d 1 -c exposure_auto=1 to disable autoexposure
+    devices = vidGrabber.listDevices();
+    vidGrabber.setDeviceID(devices[deviceIndex].id);
+	vidGrabber.setDesiredFrameRate(60);
+	vidGrabber.initGrabber(1280,720);
 
-    videoImage.allocate(640,480);
-    videoGrayImage.allocate(640,480);
+    videoSource = &vidGrabber;
+
+
+    videoImage.allocate(1280,720);
+    videoGrayImage.allocate(1280,720);
 
     we.setImage(videoGrayImage);
     we.loadFile("test.xml");
-    we.displayRect.set(200,10,400,400);
+    we.displayRect.set(200,10,600,338);
 
     //init contourFinders
     for(int i=0;i<we.windows.size();i++){
@@ -27,10 +35,16 @@ void ofApp::setup(){
 	parameters.setName("Parameters");
 	useBackground.set("Background Substraction",false);
 	threshold.set("Threshold",10,0,255);
+
+	erode.set("Erode",0,0,10);
+    dilate.set("Dilate",0,0,10);
+
 	minBlobArea.set("Minimum Blob Area",30,0,(int)BLOB_SCALE);
 	maxBlobArea.set("Maximum Blob Area",90,0,(int)BLOB_SCALE);
 
     parameters.add(threshold);
+    parameters.add(erode);
+	parameters.add(dilate);
 	parameters.add(minBlobArea);
 	parameters.add(maxBlobArea);
     parameters.add(useBackground);
@@ -44,10 +58,10 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-        player.update();
-        if(player.isFrameNew()){
+        videoSource->update();
+        if(videoSource->isFrameNew()){
 
-            videoImage.setFromPixels(player.getPixels(), player.getWidth(),player.getHeight());
+            videoImage.setFromPixels(videoSource->getPixels(), videoSource->getWidth(),videoSource->getHeight());
             videoGrayImage = videoImage;
             //warp images
             for (vector<warpWindow*>::iterator it = we.windows.begin();it != we.windows.end();it++){
@@ -59,6 +73,12 @@ void ofApp::update(){
 
                 diffImages[i].absDiff(*we.windows[i],bgImages[i]);
                 diffImages[i].threshold(threshold);
+                for(int i=0;i<dilate;i++){
+                    diffImages[i].dilate();
+                }
+                for(int i=0;i<erode;i++){
+                    diffImages[i].erode();
+                }
                 contourFinders[i]->findContours(diffImages[i],videoArea*minBlobArea/BLOB_SCALE, videoArea*maxBlobArea/BLOB_SCALE,10,false);
             }
         }
@@ -66,7 +86,7 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    player.draw(0,0,133,100);
+    videoSource->draw(0,0,133,100);
     we.draw();
 
     //drawing position
@@ -114,6 +134,16 @@ void ofApp::keyPressed(int key){
            diffImages.push_back(ww);
         }
     }
+
+    if(key=='c'){
+        vidGrabber.close();
+        deviceIndex = (deviceIndex+1)%devices.size();
+        vidGrabber.setDeviceID(devices[deviceIndex].id);
+
+        vidGrabber.setDesiredFrameRate(30);
+        vidGrabber.initGrabber(1280,720);
+    }
+
 }
 
 //--------------------------------------------------------------

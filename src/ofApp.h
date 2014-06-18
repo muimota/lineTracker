@@ -11,8 +11,14 @@
 class ofApp : public ofBaseApp{
     private:
 
-            ofVideoPlayer player;
-            ofBaseVideo&  device = player;
+            ofBaseVideoDraws  *videoSource;
+
+            ofVideoPlayer  player;
+            ofVideoGrabber vidGrabber;
+            vector<ofVideoDevice> devices;
+            int deviceIndex;
+
+
             ofxCvColorImage videoImage;
             ofxCvGrayscaleImage videoGrayImage;
 
@@ -28,6 +34,10 @@ class ofApp : public ofBaseApp{
             ofParameterGroup parameters;
 
             ofParameter<int>    threshold;
+            ofParameter<int>    dilate;
+            ofParameter<int>    erode;
+
+
             ofParameter<int>    minBlobArea;
             ofParameter<int>    maxBlobArea;
             ofParameter<bool>   useBackground;
