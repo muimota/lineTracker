@@ -36,6 +36,7 @@ void warpEditor::mouseReleased(int x, int y, int button){
         for(int i=0;i<4;i++){
             cout<<selectedWindow->srcPoints[i]<<endl;
         }
+
     }
     selectedHandle = NULL;
 }

@@ -10,17 +10,21 @@ void ofApp::setup(){
     player.loadMovie("test04.mp4");
     player.play();
 
+    videoSource = &player;
+    videoWidth  = 640;
+    videoHeight = 480;
+/*
     //if using camera v4l2-ctl -d 1 -c exposure_auto=1 to disable autoexposure
     devices = vidGrabber.listDevices();
     vidGrabber.setDeviceID(devices[deviceIndex].id);
 	vidGrabber.setDesiredFrameRate(60);
-	vidGrabber.initGrabber(1280,720);
+	vidGrabber.initGrabber(videoWidth,videoHeight);
 
     videoSource = &vidGrabber;
 
-
-    videoImage.allocate(1280,720);
-    videoGrayImage.allocate(1280,720);
+*/
+    videoImage.allocate(videoWidth,videoHeight);
+    videoGrayImage.allocate(videoWidth,videoHeight);
 
     we.setImage(videoGrayImage);
     we.loadFile("test.xml");
@@ -28,7 +32,7 @@ void ofApp::setup(){
 
     //init contourFinders
     for(int i=0;i<we.windows.size();i++){
-        ofxCvContourFinder *contour = new ofxCvContourFinder();
+        ofxCvContourFinder  *contour = new ofxCvContourFinder();
         contourFinders.push_back(contour);
     }
 
@@ -141,7 +145,7 @@ void ofApp::keyPressed(int key){
         vidGrabber.setDeviceID(devices[deviceIndex].id);
 
         vidGrabber.setDesiredFrameRate(30);
-        vidGrabber.initGrabber(1280,720);
+        vidGrabber.initGrabber(videoWidth,videoHeight);
     }
 
 }

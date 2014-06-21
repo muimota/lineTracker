@@ -15,6 +15,8 @@ class ofApp : public ofBaseApp{
 
             ofVideoPlayer  player;
             ofVideoGrabber vidGrabber;
+            int videoWidth;
+            int videoHeight;
             vector<ofVideoDevice> devices;
             int deviceIndex;
 
@@ -26,8 +28,8 @@ class ofApp : public ofBaseApp{
             ofPoint         dstPoints[4];
             warpEditor      we;
             vector<ofxCvGrayscaleImage> bgImages,diffImages;
-
             vector<ofxCvContourFinder*> 	contourFinders;
+
 
             // parameters
             ofxPanel gui;
@@ -36,7 +38,6 @@ class ofApp : public ofBaseApp{
             ofParameter<int>    threshold;
             ofParameter<int>    dilate;
             ofParameter<int>    erode;
-
 
             ofParameter<int>    minBlobArea;
             ofParameter<int>    maxBlobArea;
