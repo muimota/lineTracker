@@ -1,9 +1,14 @@
 <Parameters>
-	<Threshold>24</Threshold>
-	<Minimum_Blob_Area>80</Minimum_Blob_Area>
-	<Maximum_Blob_Area>190</Maximum_Blob_Area>
+	<Threshold>136</Threshold>
+	<Minimum_Blob_Area>100</Minimum_Blob_Area>
+	<Maximum_Blob_Area>400</Maximum_Blob_Area>
 	<Background_Substraction>0</Background_Substraction>
 <Parameters/>
 <Erode>0</Erode>
 	<Dilate>0</Dilate>
+<Adaptive_Threshold>0</Adaptive_Threshold>
+	<Blowck_Size>0</Blowck_Size>
+	<Offset>0</Offset>
+	<Invert>0</Invert>
+	<Gauss>0</Gauss>
 </Parameters>

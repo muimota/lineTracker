@@ -36,7 +36,10 @@ void warpEditor::mouseReleased(int x, int y, int button){
         for(int i=0;i<4;i++){
             cout<<selectedWindow->srcPoints[i]<<endl;
         }
-
+        ofPoint *srcPoints = selectedWindow->srcPoints;
+        int imageWidth  = max(srcPoints[0].distance(srcPoints[1]),srcPoints[2].distance(srcPoints[3]));
+        int imageHeight = max(srcPoints[0].distance(srcPoints[3]),srcPoints[1].distance(srcPoints[2]));
+        selectedWindow->allocate(imageWidth,imageHeight);
     }
     selectedHandle = NULL;
 }

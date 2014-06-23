@@ -19,6 +19,7 @@ class warpEditor
         void mouseReleased(int x, int y, int button);
         void draw();
     protected:
+
         ofxCvImage *origImage;
         int handleRadius;
         warpWindow  *selectedWindow;

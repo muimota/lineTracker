@@ -1,26 +1,8 @@
 <windows>
-	<window height="240" width="50">
-		<vertex x="29" y="91"/>
-		<vertex x="184" y="87"/>
-		<vertex x="151" y="457"/>
-		<vertex x="5" y="452"/>
-	</window>
-	<window height="240" width="50">
-		<vertex x="216" y="90"/>
-		<vertex x="273" y="92"/>
-		<vertex x="281" y="458"/>
-		<vertex x="173" y="458"/>
-	</window>
-	<window height="240" width="50">
-		<vertex x="378" y="35"/>
-		<vertex x="629" y="35"/>
-		<vertex x="664" y="643"/>
-		<vertex x="402" y="722"/>
-	</window>
-	<window height="240" width="50">
-		<vertex x="823" y="44"/>
-		<vertex x="1022" y="50"/>
-		<vertex x="1070" y="680"/>
-		<vertex x="877" y="677"/>
+	<window height="375" width="93">
+		<vertex x="513" y="76"/>
+		<vertex x="598" y="78"/>
+		<vertex x="610" y="453"/>
+		<vertex x="517" y="450"/>
 	</window>
 </windows>

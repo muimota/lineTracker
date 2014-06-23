@@ -14,6 +14,7 @@ class warpWindow : public ofxCvGrayscaleImage{
         void setImage(ofxCvImage &_image);
         ofxCvImage& getImage();
         void warp();
+
 };
 
 #endif // WARPWINDOW_H

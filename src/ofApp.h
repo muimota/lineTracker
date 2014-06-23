@@ -27,15 +27,21 @@ class ofApp : public ofBaseApp{
             ofPoint         srcPoints[4];
             ofPoint         dstPoints[4];
             warpEditor      we;
-            vector<ofxCvGrayscaleImage> bgImages,diffImages;
+            vector<ofxCvGrayscaleImage> bgImages,diffImages,prevDiffImages;
             vector<ofxCvContourFinder*> 	contourFinders;
-
+            vector<float>               amountsOfMovement;
 
             // parameters
             ofxPanel gui;
             ofParameterGroup parameters;
 
             ofParameter<int>    threshold;
+            ofParameter<bool>   adaptiveThreshold;
+            ofParameter<int>    adaptiveBlockSize;
+            ofParameter<int>    adaptiveOffset;
+            ofParameter<bool>   adaptiveInvert;
+            ofParameter<bool>   adaptiveGauss;
+
             ofParameter<int>    dilate;
             ofParameter<int>    erode;
 
@@ -60,5 +66,7 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
+
+
 
 };
