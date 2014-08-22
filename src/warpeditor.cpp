@@ -1,14 +1,14 @@
 #include "warpeditor.h"
 
-warpEditor::warpEditor(){
+WarpEditor::WarpEditor(){
     selectedHandle = NULL;
     handleRadius   = 5;
 }
 
-void warpEditor::mousePressed(int x, int y, int button){
+void WarpEditor::mousePressed(int x, int y, int button){
     ofPoint mousePosition(x,y);
     mousePosition-=displayRect.getPosition();
-    for (vector<warpWindow*>::iterator it = windows.begin();it != windows.end();it++){
+    for (vector<WarpWindow*>::iterator it = windows.begin();it != windows.end();it++){
         for(int i=0;i<4;i++){
             ofPoint pos;
             pos.x=ofMap((*it)->srcPoints[i].x,0,(*it)->getImage().getWidth(),0,displayRect.getWidth());
@@ -22,7 +22,7 @@ void warpEditor::mousePressed(int x, int y, int button){
         }
     }
 }
-void warpEditor::mouseDragged(int x, int y, int button){
+void WarpEditor::mouseDragged(int x, int y, int button){
     if(selectedHandle!=NULL){
         ofPoint mousePosition(x,y);
         mousePosition-=displayRect.getPosition();
@@ -31,7 +31,7 @@ void warpEditor::mouseDragged(int x, int y, int button){
         selectedHandle->y=floor(ofMap(mousePosition.y,0,displayRect.getHeight(),0,selectedWindow->getImage().getHeight()));
     }
 }
-void warpEditor::mouseReleased(int x, int y, int button){
+void WarpEditor::mouseReleased(int x, int y, int button){
     if(selectedHandle!=NULL){
         for(int i=0;i<4;i++){
             cout<<selectedWindow->srcPoints[i]<<endl;
@@ -39,14 +39,15 @@ void warpEditor::mouseReleased(int x, int y, int button){
         ofPoint *srcPoints = selectedWindow->srcPoints;
         int imageWidth  = max(srcPoints[0].distance(srcPoints[1]),srcPoints[2].distance(srcPoints[3]));
         int imageHeight = max(srcPoints[0].distance(srcPoints[3]),srcPoints[1].distance(srcPoints[2]));
+        //resize image
         selectedWindow->allocate(imageWidth,imageHeight);
     }
     selectedHandle = NULL;
 }
 
-void warpEditor::setImage(ofxCvImage& image){
+void WarpEditor::setImage(ofxCvImage& image){
     origImage = &image;
-    for (vector<warpWindow*>::iterator it = windows.begin();it != windows.end();it++){
+    for (vector<WarpWindow*>::iterator it = windows.begin();it != windows.end();it++){
         (*it)->setImage(image);
     }
 }
@@ -54,14 +55,14 @@ void warpEditor::setImage(ofxCvImage& image){
  Draws editor inside the displayRect
 
 */
-void warpEditor::draw()
+void WarpEditor::draw()
 {
 
     ofPushStyle();
     ofColor editorColor(255,0,0);
     origImage->draw(displayRect);
 
-    for (vector<warpWindow*>::iterator it = windows.begin();it != windows.end();it++){
+    for (vector<WarpWindow*>::iterator it = windows.begin();it != windows.end();it++){
         ofSetColor(editorColor);
         ofPolyline line;
         for(int i=0;i<4;i++){
@@ -80,10 +81,10 @@ void warpEditor::draw()
 
 }
 
-void warpEditor::addWindow(warpWindow& ww){
+void WarpEditor::addWindow(WarpWindow& ww){
     windows.push_back(&ww);
 }
-void warpEditor::loadFile(string filename){
+void WarpEditor::loadFile(string filename){
 
     ofXml windowsXml;
     windowsXml.load(filename);
@@ -96,7 +97,7 @@ void warpEditor::loadFile(string filename){
             istringstream (windowsXml.getAttribute("width")) >>wwidth;
             istringstream (windowsXml.getAttribute("height"))>>wheight;
 
-            warpWindow *ww = new warpWindow();
+            WarpWindow *ww = new WarpWindow();
             windows.push_back(ww);
             ww->allocate(wwidth,wheight);
             ww->setImage(*origImage);
@@ -106,6 +107,7 @@ void warpEditor::loadFile(string filename){
                 int vertexIndex = 0;
                 do{
                     ofPoint v;
+                    //float to String
                     istringstream (windowsXml.getAttribute("x"))>>v.x;
                     istringstream (windowsXml.getAttribute("y"))>>v.y;
                     ww->srcPoints[vertexIndex]=v;
@@ -119,11 +121,11 @@ void warpEditor::loadFile(string filename){
     }
 
 }
-void warpEditor::saveFile(string filename){
+void WarpEditor::saveFile(string filename){
 
     ofXml windowsXml;
     windowsXml.addChild("windows");
-    for (vector<warpWindow*>::iterator it = windows.begin();it != windows.end();it++){
+    for (vector<WarpWindow*>::iterator it = windows.begin();it != windows.end();it++){
         ofXml windowXml;
         windowXml.addChild("window");
         stringstream ss;

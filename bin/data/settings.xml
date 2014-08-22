@@ -1,14 +1,175 @@
 <Parameters>
-	<Threshold>136</Threshold>
-	<Minimum_Blob_Area>100</Minimum_Blob_Area>
+	<Threshold>43</Threshold>
+	<Minimum_Blob_Area>0</Minimum_Blob_Area>
 	<Maximum_Blob_Area>400</Maximum_Blob_Area>
 	<Background_Substraction>0</Background_Substraction>
 <Parameters/>
-<Erode>0</Erode>
+<Erode>1</Erode>
 	<Dilate>0</Dilate>
 <Adaptive_Threshold>0</Adaptive_Threshold>
 	<Blowck_Size>0</Blowck_Size>
 	<Offset>0</Offset>
 	<Invert>0</Invert>
 	<Gauss>0</Gauss>
+<contrast>0.7</contrast>
+	<brightness>0.82</brightness>
+	<gamma>2.4</gamma>
+<Block_Size>0</Block_Size>
+<image_0>
+		<contrast0>-0.653061</contrast0>
+		<gamma0>1.32653</gamma0>
+		<UnknownName>0</UnknownName>
+		<Threshold0>10</Threshold0>
+		<Adaptive_Threshold0>0</Adaptive_Threshold0>
+		<Block_Size0>0</Block_Size0>
+		<Offset0>0</Offset0>
+		<Invert0>0</Invert0>
+		<Gauss0>0</Gauss0>
+		<Dilate0>0</Dilate0>
+	<contrast>0.22449</contrast>
+	<brightness>-0.244898</brightness>
+		<gamma>1.07143</gamma>
+		<Threshold>1</Threshold>
+		<Block_Size>0</Block_Size>
+		<Offset>0</Offset>
+		<Invert>0</Invert>
+		<Gauss>0</Gauss>
+		<Erode>0</Erode>
+		<Dilate>0</Dilate>
+	<Threshold_Level>68</Threshold_Level>
+		<Adaptive_Threshold>0</Adaptive_Threshold>
+	</image_0>
+	<image_1>
+		<contrast1>0</contrast1>
+		<gamma1>1.40306</gamma1>
+		<UnknownName>0</UnknownName>
+		<Threshold1>10</Threshold1>
+		<Adaptive_Threshold1>0</Adaptive_Threshold1>
+		<Block_Size1>0</Block_Size1>
+		<Offset1>0</Offset1>
+		<Invert1>0</Invert1>
+		<Gauss1>0</Gauss1>
+		<Dilate1>0</Dilate1>
+	<contrast>0</contrast>
+	<brightness>0</brightness>
+		<gamma>1.02041</gamma>
+		<Threshold>1</Threshold>
+		<Block_Size>0</Block_Size>
+		<Offset>0</Offset>
+		<Invert>0</Invert>
+		<Gauss>0</Gauss>
+		<Erode>0</Erode>
+		<Dilate>0</Dilate>
+	<Threshold_Level>10</Threshold_Level>
+		<Adaptive_Threshold>0</Adaptive_Threshold>
+	</image_1>
+	<image_2>
+		<contrast2>0</contrast2>
+		<gamma2>0</gamma2>
+		<UnknownName>0</UnknownName>
+		<Threshold2>10</Threshold2>
+		<Adaptive_Threshold2>0</Adaptive_Threshold2>
+		<Block_Size2>0</Block_Size2>
+		<Offset2>0</Offset2>
+		<Invert2>0</Invert2>
+		<Gauss2>0</Gauss2>
+		<Dilate2>0</Dilate2>
+	<contrast>0.821429</contrast>
+	<brightness>-0.428571</brightness>
+		<gamma>0.969388</gamma>
+		<Threshold>1</Threshold>
+		<Block_Size>0</Block_Size>
+		<Offset>0</Offset>
+		<Invert>0</Invert>
+		<Gauss>0</Gauss>
+		<Erode>0</Erode>
+		<Dilate>0</Dilate>
+	<Threshold_Level>22</Threshold_Level>
+		<Adaptive_Threshold>0</Adaptive_Threshold>
+	</image_2>
+	<image_3>
+		<contrast3>0</contrast3>
+		<gamma3>0</gamma3>
+		<UnknownName>0</UnknownName>
+		<Threshold3>10</Threshold3>
+		<Adaptive_Threshold3>0</Adaptive_Threshold3>
+		<Block_Size3>0</Block_Size3>
+		<Offset3>0</Offset3>
+		<Invert3>0</Invert3>
+		<Gauss3>0</Gauss3>
+		<Dilate3>0</Dilate3>
+	<contrast>0.617347</contrast>
+	<brightness>-0.632653</brightness>
+		<gamma>1.83673</gamma>
+		<Threshold>1</Threshold>
+		<Block_Size>0</Block_Size>
+		<Offset>0</Offset>
+		<Invert>0</Invert>
+		<Gauss>0</Gauss>
+		<Erode>0</Erode>
+		<Dilate>0</Dilate>
+	<Threshold_Level>10</Threshold_Level>
+		<Adaptive_Threshold>0</Adaptive_Threshold>
+	</image_3>
+<UnknownName>1</UnknownName>
+<window_0>
+		<contrast>0.903061</contrast>
+		<brightness>0.489796</brightness>
+		<gamma>1.25</gamma>
+		<Threshold>1</Threshold>
+		<Threshold_Level>14</Threshold_Level>
+		<Adaptive_Threshold>0</Adaptive_Threshold>
+		<Block_Size>0</Block_Size>
+		<Offset>0</Offset>
+		<Invert>0</Invert>
+		<Gauss>0</Gauss>
+		<Erode>0</Erode>
+		<Dilate>0</Dilate>
+	<Median>0</Median>
+	</window_0>
+	<window_1>
+		<contrast>0.913265</contrast>
+		<brightness>0.816327</brightness>
+		<gamma>1.86224</gamma>
+		<Threshold>1</Threshold>
+		<Threshold_Level>68</Threshold_Level>
+		<Adaptive_Threshold>0</Adaptive_Threshold>
+		<Block_Size>0</Block_Size>
+		<Offset>0</Offset>
+		<Invert>0</Invert>
+		<Gauss>0</Gauss>
+		<Erode>0</Erode>
+		<Dilate>0</Dilate>
+	<Median>0</Median>
+	</window_1>
+	<window_2>
+		<contrast>0.69898</contrast>
+		<brightness>0.387755</brightness>
+		<gamma>1.60714</gamma>
+		<Threshold>1</Threshold>
+		<Threshold_Level>10</Threshold_Level>
+		<Adaptive_Threshold>0</Adaptive_Threshold>
+		<Block_Size>0</Block_Size>
+		<Offset>0</Offset>
+		<Invert>0</Invert>
+		<Gauss>0</Gauss>
+		<Erode>1</Erode>
+		<Dilate>1</Dilate>
+	<Median>0</Median>
+	</window_2>
+	<window_3>
+		<contrast>0.821429</contrast>
+		<brightness>0.387755</brightness>
+		<gamma>1.17347</gamma>
+		<Threshold>1</Threshold>
+		<Threshold_Level>79</Threshold_Level>
+		<Adaptive_Threshold>0</Adaptive_Threshold>
+		<Block_Size>9</Block_Size>
+		<Offset>0</Offset>
+		<Invert>0</Invert>
+		<Gauss>0</Gauss>
+		<Erode>0</Erode>
+		<Dilate>0</Dilate>
+	<Median>0</Median>
+	</window_3>
 </Parameters>

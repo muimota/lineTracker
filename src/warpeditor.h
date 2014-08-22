@@ -3,14 +3,15 @@
 
 #include "warpWindow.h"
 
-class warpEditor
+class WarpEditor
 {
     public:
-        vector<warpWindow*>  windows;
+        vector<WarpWindow*>  windows;
         ofRectangle displayRect;
 
-        warpEditor();
-        void addWindow(warpWindow& ww);
+
+        WarpEditor();
+        void addWindow(WarpWindow& ww);
         void loadFile(string filename);
         void saveFile(string filename);
         void setImage(ofxCvImage& image);
@@ -22,9 +23,9 @@ class warpEditor
 
         ofxCvImage *origImage;
         int handleRadius;
-        warpWindow  *selectedWindow;
+        WarpWindow  *selectedWindow;
         ofPoint     *selectedHandle;
-        ofPoint handleOffset;
+        ofPoint     handleOffset;
 };
 
 #endif // WARPEDITOR_H
