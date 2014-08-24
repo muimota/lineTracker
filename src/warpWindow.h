@@ -15,7 +15,7 @@ class WarpWindow : public ofxCvGrayscaleImage{
         ofxCvGrayscaleImage prevImage; //previous image to do image substract
         ofxCvGrayscaleImage diffImage; //diff image to calculate amount of movement
 
-        ofxCvGrayscaleImage startLineImage; //line image once it has been detected
+
         ofxCvGrayscaleImage lineImage; //line image once it has been detected
 
         ofxCvFloatImage     floatImage;//float image for gamma

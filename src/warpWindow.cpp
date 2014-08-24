@@ -106,39 +106,38 @@ void WarpWindow::findContours(float minBlobArea,float maxBlobArea){
         //Detected status
         status=LineEventArgs::DETECTED;
         notifyEvent();
-
-        //create an image for the line
-        lineImage.allocate(startLineBox.width,startLineBox.height);
-        startLineImage.allocate(startLineBox.width,startLineBox.height);
-
-        setROI(startLineBox);
-        //fill lineImage with the image from the line
-        startLineImage.setFromPixels(getRoiPixels(),startLineBox.width,startLineBox.height);
-        //reset ROI
-        setROI(0,0,getWidth(),getHeight());
-
         lineArea = startLineBox.width*startLineBox.height;
+
+        int divisionHeight = startLineBox.height/ndivisions;
+
+        for(int i=0;i<ndivisions;i++){
+            startWhitePixels[i]=countNonZeroInRegion(startLineBox.x,startLineBox.y+divisionHeight*i,startLineBox.width,divisionHeight);
+        }
     }
 
     if(status==LineEventArgs::DETECTED){
 
-        setROI(startLineBox);
-        //fill lineImage with the image from the line
-        lineImage.setFromPixels(getRoiPixels(),startLineBox.width,startLineBox.height);
-        //reset ROI
-        setROI(0,0,getWidth(),getHeight());
-
+        //calculate lineMovement
         nonZeroPixels = diffImage.countNonZeroInRegion(startLineBox.x,startLineBox.y,startLineBox.width,startLineBox.height);
         lineMovement = nonZeroPixels/(float)(startLineBox.width*startLineBox.height);
-        contourFinder.findContours(lineImage,0, lineArea,1,false);
-        //ofxCvBlob blob = contourFinder.blobs[0];
-        if(contourFinder.blobs.size()==0 ||lineMovement>0.06){
+
+        //calculate distribution
+        int divisionHeight = startLineBox.height/ndivisions;
+        for(int i=0;i<ndivisions;i++){
+            whitepixels[i]=countNonZeroInRegion(startLineBox.x,startLineBox.y+divisionHeight*i,startLineBox.width,divisionHeight);
+            int perct = (int)(whitepixels[i]/(float)startWhitePixels[i]*100);
+            cout<<i<<"#"<<perct<<"("<<whitepixels[i]<<") #";
+        }
+        cout<<endl;
+
+        if(lineMovement>0.06){
             bboxIndex = bboxCount=lineEnergy = lineMovement= 0;
             status=LineEventArgs::CANCELLED;
             notifyEvent();
             status=LineEventArgs::READY;
             notifyEvent();
         }
+
     }
 
 }

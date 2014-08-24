@@ -182,8 +182,9 @@ void ofApp::drawDebug(){
        ofRectangle displayRect(windowOffset.x,windowOffset.y,windowWidth,windowHeight);
        ww.draw(displayRect);
        if(ww.status==LineEventArgs::DETECTED){
-            displayRect.y+=200;
-            ww.lineImage.draw(displayRect);
+            ww.setROI(ww.startLineBox);
+            ww.drawROI(windowOffset.x,windowOffset.y+200);
+            ww.setROI(0,0,ww.width,ww.height);
        }
 
        windowOffset.x+=windowWidth;
