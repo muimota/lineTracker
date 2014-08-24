@@ -94,10 +94,13 @@ void WarpEditor::loadFile(string filename){
         windowsXml.setToChild(0);
         do{
             int wwidth,wheight;
+            string name = windowsXml.getAttribute("name");
             istringstream (windowsXml.getAttribute("width")) >>wwidth;
             istringstream (windowsXml.getAttribute("height"))>>wheight;
 
+
             WarpWindow *ww = new WarpWindow();
+            ww->name=name;
             windows.push_back(ww);
             ww->allocate(wwidth,wheight);
             ww->setImage(*origImage);
@@ -128,12 +131,15 @@ void WarpEditor::saveFile(string filename){
     for (vector<WarpWindow*>::iterator it = windows.begin();it != windows.end();it++){
         ofXml windowXml;
         windowXml.addChild("window");
+        windowXml.setAttribute("name",(*it)->name);
+
         stringstream ss;
         ss  << (*it)->getWidth();
         windowXml.setAttribute("width",ss.str());
         ss.str("");
         ss << (*it)->getHeight();
         windowXml.setAttribute("height",ss.str());
+
         for(int i=0;i<4;i++){
             ofXml vertexXml;
             vertexXml.addChild("vertex");

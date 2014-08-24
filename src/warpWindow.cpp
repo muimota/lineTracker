@@ -2,14 +2,23 @@
 
 WarpWindow::WarpWindow():ofxCvGrayscaleImage(),lineEnergy(0){
     //init averages
+    bboxCount=bboxIndex=0;
     for(int i=0;i<nsamples;i++){
-        energySamples[i]=0;
-        movementSamples[i]=0;
-        bboxSamples[i].position = ofPoint(0,0);
-        bboxSamples[i].width = bboxSamples[i].height = 0;
+        bboxSamples[i].set(0,0,0,0);
     }
-    sampleIndex=0;
+    for(int i=0;i<ndivisions;i++){
+        whitepixels[i]=0;
+    }
+
+    status = LineEventArgs::READY;
+    notifyEvent();
 };
+
+void WarpWindow::notifyEvent(){
+    LineEventArgs lineEventArgs(status,lineBox,lineBox.height/getHeight(),this);
+    ofNotifyEvent(lineEvent, lineEventArgs, this);
+    statusTimeStamp = ofGetElapsedTimeMillis();
+}
 
 void WarpWindow::allocate(int w, int h){
     //
@@ -24,8 +33,6 @@ void WarpWindow::allocate(int w, int h){
     dstPoints[1] = ofPoint(w,0);
     dstPoints[2] = ofPoint(w,h);
     dstPoints[3] = ofPoint(0,h);
-
-
 }
 void WarpWindow::setImage(ofxCvImage &_image){
     origImage = &_image;
@@ -49,70 +56,91 @@ void WarpWindow::warp(){
 
 //TODO:Should this be in warp?
 void WarpWindow::findContours(float minBlobArea,float maxBlobArea){
-    //update sample index
-    //TODO:may idependent indexes
-    sampleIndex = (sampleIndex+1) % nsamples;
-    //calculate amount of movement
+
+    //time since las status update
+    long long unsigned timeElapsed = ofGetElapsedTimeMillis()-statusTimeStamp;
+
+    //diff image with previus
     diffImage.absDiff(*this,prevImage);
-    int nonZeroPixels = countNonZeroInRegion(0,0,getWidth(),getHeight());
-    movementSamples[sampleIndex]=nonZeroPixels/(float)videoArea;
+    //update prev image
     prevImage.setFromPixels(getPixels(),getWidth(),getHeight());
 
-    //
-    contourFinder.findContours(*this,videoArea*minBlobArea/1000, videoArea*maxBlobArea/1000,1,false);
-    float prevLineEnergy = lineEnergy;
-    //if found update energy
+    int nonZeroPixels = diffImage.countNonZeroInRegion(0,0,getWidth(),getHeight());
+    //amount of movement in whole area
+    windowMovement  = (float)nonZeroPixels/videoArea;
 
-    if(movementSamples[sampleIndex]<0.1 && contourFinder.blobs.size()>0){
+    contourFinder.findContours(*this,400,maxBlobArea*videoArea/1000,1,false);
+    float prevLineEnergy = lineEnergy;
+
+    //looking for line
+    if(status==LineEventArgs::READY && windowMovement<0.1 && contourFinder.blobs.size()>0){
+        //grab the biggest blob
         ofxCvBlob blob = contourFinder.blobs[0];
         ofRectangle bbox = blob.boundingRect;
-        bboxSamples[sampleIndex] = bbox;
+
         //check the proportions of the line
         if(bbox.height/bbox.width>2.0){
             lineEnergy = (lineEnergy<10)?lineEnergy+1:10;
+            //insert bbox
+            bboxCount = MIN(bboxCount+1,nsamples);
+            bboxIndex = (bboxIndex+1)%bboxCount;
+            bboxSamples[bboxIndex] = bbox;
         }else{
-            lineEnergy = (lineEnergy>0)?lineEnergy-1:0;
+            bboxIndex = bboxCount=lineEnergy = lineMovement= 0;
+            return;
         }
-    }else{
-        lineEnergy = (lineEnergy>0)?lineEnergy-1:0;
     }
 
     //calcualate avg box
     lineBox.set(0,0,0,0);
-    for(int i=0;i<nsamples;i++){
-        lineBox.position += bboxSamples[i].position/nsamples;
-        lineBox.width    += bboxSamples[i].width/nsamples;
-        lineBox.height   += bboxSamples[i].height/nsamples;
+    for(int i=0;i<bboxCount;i++){
+        lineBox.position += bboxSamples[i].position/bboxCount;
+        lineBox.width    += bboxSamples[i].width/bboxCount;
+        lineBox.height   += bboxSamples[i].height/bboxCount;
     }
 
-    if(prevLineEnergy<10 && lineEnergy==10){
+    //we have just found a line
+    if(status==LineEventArgs::READY  && lineEnergy==10){
         startLineBox = lastLineBox = lineBox;
-        cout<<"new line detected!"<<endl;
-    }else{
-        if(lineEnergy<10 && prevLineEnergy==10){
-            cout<<"line lost"<<endl;
+
+        //Detected status
+        status=LineEventArgs::DETECTED;
+        notifyEvent();
+
+        //create an image for the line
+        lineImage.allocate(startLineBox.width,startLineBox.height);
+        startLineImage.allocate(startLineBox.width,startLineBox.height);
+
+        setROI(startLineBox);
+        //fill lineImage with the image from the line
+        startLineImage.setFromPixels(getRoiPixels(),startLineBox.width,startLineBox.height);
+        //reset ROI
+        setROI(0,0,getWidth(),getHeight());
+
+        lineArea = startLineBox.width*startLineBox.height;
+    }
+
+    if(status==LineEventArgs::DETECTED){
+
+        setROI(startLineBox);
+        //fill lineImage with the image from the line
+        lineImage.setFromPixels(getRoiPixels(),startLineBox.width,startLineBox.height);
+        //reset ROI
+        setROI(0,0,getWidth(),getHeight());
+
+        nonZeroPixels = diffImage.countNonZeroInRegion(startLineBox.x,startLineBox.y,startLineBox.width,startLineBox.height);
+        lineMovement = nonZeroPixels/(float)(startLineBox.width*startLineBox.height);
+        contourFinder.findContours(lineImage,0, lineArea,1,false);
+        //ofxCvBlob blob = contourFinder.blobs[0];
+        if(contourFinder.blobs.size()==0 ||lineMovement>0.06){
+            bboxIndex = bboxCount=lineEnergy = lineMovement= 0;
+            status=LineEventArgs::CANCELLED;
+            notifyEvent();
+            status=LineEventArgs::READY;
+            notifyEvent();
         }
     }
 
-    //line goes shorter
-    if(lineEnergy==10 && prevLineEnergy==10){
-        int percentage = lineBox.height/startLineBox.height*100;
-        int partialPercentage = lastLineBox.height/startLineBox.height*100;
-        //variation of 5%
-        if(partialPercentage-percentage>5){
-            int percentage = lineBox.height/startLineBox.height*100;
-            //the variation is very small consider it hasn't changed
-            cout<< lineBox.x <<" - "<<lastLineBox.x<<endl;
-            if(fabs(lineBox.x-lastLineBox.x)>5){
-                cout<<"TOP "<<percentage<<endl;
-            }else{
-                cout<<"BOTTOM "<<percentage<<endl;
-            }
-
-
-            lastLineBox = lineBox;
-        }
-    }
 }
 
 void WarpWindow::gamma(float gammaParameter){
@@ -128,14 +156,6 @@ void WarpWindow::median(int radius){
     radius = MIN(5,MAX(0,1+(radius-1)*2));
     cvSmooth( img, img, CV_MEDIAN, radius, 0 );
     setFromFloatImage(floatImage);
-}
-
-float WarpWindow::getAmountOfMovement(){
-    float movementSum = 0;
-    for(int i=0;i<nsamples;i++){
-        movementSum+=movementSamples[i];
-    }
-    return movementSum/nsamples;
 }
 
 void WarpWindow::draw(const ofRectangle& rect){

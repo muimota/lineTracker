@@ -26,27 +26,8 @@ class ofApp : public ofBaseApp{
 
             ofxCvColorImage videoImage;
             ofxCvGrayscaleImage videoGrayImage;
-            ofxCvFloatImage videoFloatImage;
 
-            ofPoint         srcPoints[4];
-            ofPoint         dstPoints[4];
             WarpEditor      we;
-            vector<ofxCvGrayscaleImage> bgImages,diffImages;
-            vector<ofxCvContourFinder*> 	contourFinders;
-            //TODO unos comentarios...
-
-            //aray to calculate an average of the height
-            float   lineHeightsArray[TRACKS_COUNT][AVG_SIZE];
-            //average Line
-            float   avgLineHeight[TRACKS_COUNT];
-            //line of the operation accepted
-            float   operationHeight[TRACKS_COUNT];
-            //if button is pressed in the track
-            bool    buttonPressed[TRACKS_COUNT];
-            //state of each track
-            int status[TRACKS_COUNT];
-
-            int avgIndex;
 
             ofTrueTypeFont font;
 
@@ -78,13 +59,15 @@ class ofApp : public ofBaseApp{
             ofxButton grabBackground;
 
             bool displayDebug;
+
+            string eventMessage[4]={"init","init","init","init"};
 	public:
 		void setup();
 		void update();
 		void draw();
 		void drawDebug();
 		void drawPresentation();
-         void grabBackGround();
+
 
 		void keyPressed(int key);
 		void keyReleased(int key);
@@ -95,7 +78,7 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-
+        void lineHandler(LineEventArgs &le);
 
 
 
