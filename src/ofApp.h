@@ -52,11 +52,11 @@ class ofApp : public ofBaseApp{
             ofParameter<int>    erode[4];
             ofParameter<int>    median[4];
 
+            ofParameter<float>  maxWindowMovement;
+            ofParameter<float>  maxLineMovement;
+
             ofParameter<int>    minBlobArea;
             ofParameter<int>    maxBlobArea;
-            ofParameter<bool>   useBackgroundSubstraction;
-
-            ofxButton grabBackground;
 
             bool displayDebug;
 

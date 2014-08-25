@@ -3,20 +3,17 @@
 #include "ofxOpenCv.h"
 
 #define nsamples   20
-#define ndivisions 2
+#define ndivisions 20
 
 class LineEventArgs;
 
 class WarpWindow : public ofxCvGrayscaleImage{
 
     protected:
-    public:
+
         ofxCvImage          *origImage;//pointer to the frame image
         ofxCvGrayscaleImage prevImage; //previous image to do image substract
         ofxCvGrayscaleImage diffImage; //diff image to calculate amount of movement
-
-
-        ofxCvGrayscaleImage lineImage; //line image once it has been detected
 
         ofxCvFloatImage     floatImage;//float image for gamma
 
@@ -25,7 +22,13 @@ class WarpWindow : public ofxCvGrayscaleImage{
 
         int startWhitePixels[ndivisions]; //initial distribution of pixels
         int whitepixels[ndivisions];      //distribution of pixels
+        int topIndex; //index to know whick was the last empty portion of line
+        int bottomIndex;
 
+
+        void notifyEvent(); //notify new status
+
+     public:
         WarpWindow();
 
         string    name;
@@ -35,25 +38,23 @@ class WarpWindow : public ofxCvGrayscaleImage{
         ofPoint   dstPoints[4];
 
 
-        ofRectangle lineBox,startLineBox,lastLineBox;
+        ofRectangle lineBox,startLineBox;
         int lineEnergy;
         float windowMovement = 0; //Window's amount of movement
         float lineMovement   = 0; //line's amount of movement
 
         ofxCvContourFinder 	contourFinder;
 
-        int videoArea,lineArea;
+        int videoArea;
         void allocate(int w, int h);
         void setImage(ofxCvImage &_image);
         ofxCvImage& getImage();
         void warp();
         void median(int radius);
         void gamma(float gammaParameter);
-        void findContours(float minBlobArea,float maxBlobArea);
+        void findContours(float minBlobArea,float maxBlobArea,float maxWindowMovement,float maxLineMovement);
         void draw(const ofRectangle& rectangle);
-
-        void notifyEvent(); //notify new status
-
+        void reset();
         ofEvent<LineEventArgs> lineEvent;
 };
 
@@ -78,7 +79,8 @@ public:
 
     friend ostream& operator<<(ostream& os, const LineEventArgs& le){
         string statusNames[] = {"READY","DETECTED","START","UP","DOWN","CANCELLED","FINISH"};
-        os << le.sender->name << ":" << statusNames[le.status] <<": "<<le.bbox;
+
+        os << le.sender->name << ":" << statusNames[le.status] <<": "<<le.bbox.height;
         return os;
     }
 };

@@ -65,6 +65,9 @@ void ofApp::setup(){
     //min blob max of 10%
 	minBlobArea.set("Minimum Blob Area",30,0,(int)BLOB_SCALE/10);
 	maxBlobArea.set("Maximum Blob Area",90,0,(int)BLOB_SCALE);
+    maxWindowMovement.set("Max Window Movement",0.1,0,1);
+    maxLineMovement.set("Max Line Movement",0.06,0,1);
+
 
     parameters.setName("Parameters");
 
@@ -93,13 +96,15 @@ void ofApp::setup(){
 
 	parameters.add(minBlobArea);
 	parameters.add(maxBlobArea);
+	parameters.add(maxWindowMovement);
+	parameters.add(maxLineMovement);
+
 
     displayDebug = true;
-    font.loadFont("type/verdana.ttf", 30);
+    font.loadFont("type/verdana.ttf", 50);
 
 	//gui
 	gui.setup(parameters);
-	gui.add(grabBackground.setup("grab Background"));
     gui.loadFromFile("settings.xml");
     gui.setPosition(420,360);
 }
@@ -139,7 +144,7 @@ void ofApp::update(){
                     ww->dilate();
                 }
                 ww->median(median[i]);
-                ww->findContours(minBlobArea,maxBlobArea);
+                ww->findContours(minBlobArea,maxBlobArea,maxWindowMovement,maxLineMovement);
             }
         }
 }
@@ -163,7 +168,7 @@ void ofApp::drawPresentation(){
         }else{
             ofSetColor(255,0,0);
         }
-        font.drawString(eventMessage[i],100,100+i*30);
+        font.drawString(eventMessage[i],100,100+i*(font.getSize()+5));
         ofPopStyle();
     }
 }
@@ -181,10 +186,11 @@ void ofApp::drawDebug(){
        float windowWidth = ww.getWidth()*windowHeight/float(ww.getHeight());
        ofRectangle displayRect(windowOffset.x,windowOffset.y,windowWidth,windowHeight);
        ww.draw(displayRect);
-       if(ww.status==LineEventArgs::DETECTED){
+       if(ww.status>LineEventArgs::READY ){
             ww.setROI(ww.startLineBox);
             ww.drawROI(windowOffset.x,windowOffset.y+200);
             ww.setROI(0,0,ww.width,ww.height);
+            //ww.resetROI();
        }
 
        windowOffset.x+=windowWidth;
@@ -227,15 +233,43 @@ void ofApp::keyPressed(int key){
 void ofApp::lineHandler(LineEventArgs &le){
      int i;
      stringstream ss;
+     WarpWindow *ww;
      for(i=0;i<we.windows.size();i++){
-        WarpWindow *ww  =we.windows[i];
+        ww =we.windows[i];
         if(ww == le.sender){
             break;
         }
      }
-     ss<<le;
-     eventMessage[i] = ss.str();
-     cout<<"-"<<ss.str()<<endl;
+
+     if(le.status==LineEventArgs::DETECTED){
+        int money  = (ww->startLineBox.height/ww->height)*10000000;
+        ss<<"DETECTED!"<<money;
+        eventMessage[i] = ss.str();
+     }
+
+     if(le.status==LineEventArgs::CANCELLED){
+        ss<<"LOST!";
+        eventMessage[i] = ss.str();
+     }
+     if(le.status==LineEventArgs::UP){
+        int percent = (1-ww->lineBox.height/ww->startLineBox.height)*100;
+        cout<<percent<<endl;
+        ss<<"BUY-"<<percent<<"%";
+        eventMessage[i] = ss.str();
+     }
+     if(le.status==LineEventArgs::DOWN){
+        //int money   = (ww->startLineBox.height/ww->height)*10000000;
+        //int buy     = (1-ww->lineBox.height/ww->startLineBox.height)*money;
+        int percent = (1-ww->lineBox.height/ww->startLineBox.height)*100;
+        ss<<"SELL-"<<percent;
+        eventMessage[i] = ss.str();
+     }
+     if(le.status==LineEventArgs::FINISH){
+        ss<<"FINISH!!";
+        eventMessage[i] = ss.str();
+     }
+
+    cout<<le<<endl;
 }
 
 //--------------------------------------------------------------
