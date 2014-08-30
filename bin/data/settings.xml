@@ -113,24 +113,24 @@
 	</image_3>
 <UnknownName>1</UnknownName>
 <window_0>
-		<contrast>0.831633</contrast>
-		<brightness>0.0408163</brightness>
-		<gamma>0.459184</gamma>
+		<contrast>0.913265</contrast>
+		<brightness>-0.0816326</brightness>
+		<gamma>0.612245</gamma>
 		<Threshold>1</Threshold>
-		<Threshold_Level>106</Threshold_Level>
+		<Threshold_Level>109</Threshold_Level>
 		<Adaptive_Threshold>0</Adaptive_Threshold>
 		<Block_Size>0</Block_Size>
 		<Offset>0</Offset>
 		<Invert>0</Invert>
 		<Gauss>0</Gauss>
 		<Erode>0</Erode>
-		<Dilate>1</Dilate>
+		<Dilate>0</Dilate>
 	<Median>0</Median>
 	</window_0>
 	<window_1>
 		<contrast>0.836735</contrast>
-		<brightness>0.408163</brightness>
-		<gamma>0.739796</gamma>
+		<brightness>0.163265</brightness>
+		<gamma>1.30102</gamma>
 		<Threshold>1</Threshold>
 		<Threshold_Level>115</Threshold_Level>
 		<Adaptive_Threshold>0</Adaptive_Threshold>
@@ -143,11 +143,11 @@
 	<Median>0</Median>
 	</window_1>
 	<window_2>
-		<contrast>0.806122</contrast>
-		<brightness>0.530612</brightness>
-		<gamma>0.841837</gamma>
+		<contrast>0.586735</contrast>
+		<brightness>-0.306122</brightness>
+		<gamma>0.739796</gamma>
 		<Threshold>1</Threshold>
-		<Threshold_Level>130</Threshold_Level>
+		<Threshold_Level>74</Threshold_Level>
 		<Adaptive_Threshold>0</Adaptive_Threshold>
 		<Block_Size>0</Block_Size>
 		<Offset>0</Offset>
@@ -159,8 +159,8 @@
 	</window_2>
 	<window_3>
 		<contrast>0.928571</contrast>
-		<brightness>0.816327</brightness>
-		<gamma>1.07143</gamma>
+		<brightness>0.693877</brightness>
+		<gamma>1.09694</gamma>
 		<Threshold>1</Threshold>
 		<Threshold_Level>100</Threshold_Level>
 		<Adaptive_Threshold>0</Adaptive_Threshold>

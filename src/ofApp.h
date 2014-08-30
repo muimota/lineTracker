@@ -3,6 +3,8 @@
 #include "ofMain.h"
 #include "ofxOpenCv.h"
 #include "ofxGui.h"
+#include "ofxOsc.h"
+
 #include "warpWindow.h"
 #include "warpeditor.h"
 
@@ -61,6 +63,9 @@ class ofApp : public ofBaseApp{
             bool displayDebug;
 
             string eventMessage[4]={"init","init","init","init"};
+            //OSC
+            ofxOscSender sender;
+
 	public:
 		void setup();
 		void update();

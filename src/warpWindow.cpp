@@ -13,6 +13,7 @@ void WarpWindow::reset(){
         bboxSamples[i].set(0,0,0,0);
     }
     lineBox.set(0,0,0,0);
+    startLineBox.set(0,0,0,0);
     status = LineEventArgs::READY;
     notifyEvent();
 }
@@ -63,10 +64,16 @@ void WarpWindow::findContours(float minBlobArea,float maxBlobArea,float maxWindo
     long long unsigned timeElapsed = ofGetElapsedTimeMillis()-statusTimeStamp;
 
     //if in 20sec nohing has happened reset the line
-    if(status != LineEventArgs::READY && timeElapsed>10000){
+    if((status != LineEventArgs::READY && timeElapsed>20000) ||
+       (status >  LineEventArgs::START && timeElapsed>5000)) {
         reset();
         return;
     }
+    //if detected update detected line
+    if(status == LineEventArgs::DETECTED && timeElapsed>1000){
+        status = LineEventArgs::READY;
+    }
+
     //diff image with previus
     diffImage.absDiff(*this,prevImage);
     //update prev image
@@ -81,7 +88,7 @@ void WarpWindow::findContours(float minBlobArea,float maxBlobArea,float maxWindo
 
 
     //looking for line
-    if(status==LineEventArgs::READY && windowMovement<0.06 && contourFinder.blobs.size()>0){
+    if(status==LineEventArgs::READY && windowMovement<maxWindowMovement && contourFinder.blobs.size()>0){
         //grab the biggest blob
         ofxCvBlob blob = contourFinder.blobs[0];
         ofRectangle bbox = blob.boundingRect;
@@ -134,7 +141,7 @@ void WarpWindow::findContours(float minBlobArea,float maxBlobArea,float maxWindo
         nonZeroPixels = diffImage.countNonZeroInRegion(startLineBox.x,startLineBox.y,startLineBox.width,startLineBox.height);
         lineMovement = nonZeroPixels/(float)(startLineBox.width*startLineBox.height);
 
-        if(lineMovement>0.06){
+        if(lineMovement>maxLineMovement){
             status=LineEventArgs::CANCELLED;
             notifyEvent();
             reset();
@@ -151,6 +158,7 @@ void WarpWindow::findContours(float minBlobArea,float maxBlobArea,float maxWindo
         float topPortion    = whitepixels[topIndex]/(float)startWhitePixels[0];
         float bottomPortion = whitepixels[bottomIndex]/(float)startWhitePixels[0];
 
+        //TODO: simplify it, if a gesture has started with a direction. don't change it
         bool  downMove = topPortion<0.1;
         bool  upMove   = bottomPortion<0.1;
 
@@ -165,15 +173,16 @@ void WarpWindow::findContours(float minBlobArea,float maxBlobArea,float maxWindo
                 notifyEvent();
             }
 
-            if(downMove){
+            if(downMove && (status==LineEventArgs::START || status==LineEventArgs::DOWN)){
                 lineBox.y+=divisionHeight;
                 status=LineEventArgs::DOWN;
                 topIndex++;
                 notifyEvent();
             }
-            if(upMove){
-                status=LineEventArgs::UP;
+
+            if(upMove && (status==LineEventArgs::START || status==LineEventArgs::UP)){
                 bottomIndex--;
+                status=LineEventArgs::UP;
                 notifyEvent();
             }
             if(bottomIndex==topIndex){

@@ -3,7 +3,7 @@
 #include "ofxOpenCv.h"
 
 #define nsamples   20
-#define ndivisions 20
+#define ndivisions 10
 
 class LineEventArgs;
 
@@ -61,12 +61,12 @@ class WarpWindow : public ofxCvGrayscaleImage{
 
 class LineEventArgs : public ofEventArgs {
 public:
-    static const int READY      =0;
-    static const int DETECTED   =1;
-    static const int START      =2;
-    static const int UP         =3;
-    static const int DOWN       =4;
-    static const int CANCELLED  =5;
+    static const int CANCELLED  =0;
+    static const int READY      =1;
+    static const int DETECTED   =2;
+    static const int START      =3;
+    static const int UP         =4;
+    static const int DOWN       =5;
     static const int FINISH     =6;
 
     WarpWindow *sender;

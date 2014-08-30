@@ -5,47 +5,36 @@
 void ofApp::setup(){
 
 
-
-/*
-    player.loadMovie("test04.mp4");
-    player.setLoopState(OF_LOOP_NORMAL);
-    player.play();
-*/
-
     videoWidth  = 640;
     videoHeight = 480;
 
     //videoSource = &player;
 
-    //if using camera v4l2-ctl -d 1 -c exposure_auto=1 to disable autoexposure
+    //videos
     devices = vidGrabber.listDevices();
     vidGrabber.setDeviceID(devices[deviceIndex].id);
 	vidGrabber.setDesiredFrameRate(30);
 	vidGrabber.initGrabber(videoWidth,videoHeight);
-	//vidGrabber.videoSettings();
-    videoSource = &vidGrabber;
+	videoSource = &vidGrabber;
 
     videoImage.allocate(videoWidth,videoHeight);
     videoGrayImage.allocate(videoWidth,videoHeight);
 
-
-
+    //windows
     we.setImage(videoGrayImage);
     we.loadFile("test.xml");
     //set where the rectangle is going to be drawn
     int windowEditorWidth = 600;
     //where is going to be displayed so it can be edited with the mouse
     we.displayRect.set(200,10,windowEditorWidth,windowEditorWidth*videoHeight/float(videoWidth));
-
-
+    //windows' events listener
     for(int i=0;i<we.windows.size();i++){
         WarpWindow *ww = we.windows[i];
         ofAddListener(ww->lineEvent, this, &ofApp::lineHandler);
 
     }
 
-
-
+    //GUI
     for(int i=0;i<we.windows.size();i++){
             contrast[i].set("contrast",0,0,1);
             brightness[i].set("brightness",0,-2,2);
@@ -76,7 +65,6 @@ void ofApp::setup(){
         ostringstream imageName;
         imageName<<"window "<<i;
         windowParameters[i].setName(imageName.str());
-
         windowParameters[i].add(contrast[i]);
         windowParameters[i].add(brightness[i]);
         windowParameters[i].add(gamma[i]);
@@ -103,10 +91,12 @@ void ofApp::setup(){
     displayDebug = true;
     font.loadFont("type/verdana.ttf", 50);
 
-	//gui
 	gui.setup(parameters);
     gui.loadFromFile("settings.xml");
     gui.setPosition(420,360);
+
+    //osc up
+    sender.setup("127.0.0.1",12000);
 }
 
 //--------------------------------------------------------------
@@ -179,7 +169,7 @@ void ofApp::drawDebug(){
     we.draw();
 
     //draw windows
-    ofPoint windowOffset(700,100);
+    ofPoint windowOffset(0,400);
     float windowHeight = 200;
     for(int i=0;i<we.windows.size();i++){
        WarpWindow& ww = *we.windows[i];
@@ -234,6 +224,9 @@ void ofApp::lineHandler(LineEventArgs &le){
      int i;
      stringstream ss;
      WarpWindow *ww;
+
+     //index of the
+
      for(i=0;i<we.windows.size();i++){
         ww =we.windows[i];
         if(ww == le.sender){
@@ -241,27 +234,44 @@ void ofApp::lineHandler(LineEventArgs &le){
         }
      }
 
+     ofxOscMessage m;
+     m.setAddress("/MNS");
+     m.addIntArg(le.status);
+     m.addIntArg(i);
+     //ratio between window height, line height
+     float lineHeight = ww->startLineBox.height/ww->height;
+     m.addFloatArg(lineHeight);
+     //ratio of the line line consumed
+     float lineRatio;
+     if(le.status==LineEventArgs::DETECTED || le.status==LineEventArgs::READY){
+        lineRatio = 0;
+     }else{
+        lineRatio = ww->lineBox.height/ww->startLineBox.height;
+     }
+     m.addFloatArg(lineRatio);
+     sender.sendMessage(m);
+
      if(le.status==LineEventArgs::DETECTED){
         int money  = (ww->startLineBox.height/ww->height)*10000000;
         ss<<"DETECTED!"<<money;
         eventMessage[i] = ss.str();
      }
 
-     if(le.status==LineEventArgs::CANCELLED){
-        ss<<"LOST!";
+     if(le.status==LineEventArgs::READY){
+        ss<<"READY";
         eventMessage[i] = ss.str();
      }
      if(le.status==LineEventArgs::UP){
         int percent = (1-ww->lineBox.height/ww->startLineBox.height)*100;
         cout<<percent<<endl;
-        ss<<"BUY-"<<percent<<"%";
+        ss<<"BUY:"<<percent<<"%";
         eventMessage[i] = ss.str();
      }
      if(le.status==LineEventArgs::DOWN){
         //int money   = (ww->startLineBox.height/ww->height)*10000000;
         //int buy     = (1-ww->lineBox.height/ww->startLineBox.height)*money;
         int percent = (1-ww->lineBox.height/ww->startLineBox.height)*100;
-        ss<<"SELL-"<<percent;
+        ss<<"SELL:"<<percent;
         eventMessage[i] = ss.str();
      }
      if(le.status==LineEventArgs::FINISH){

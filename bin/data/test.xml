@@ -1,26 +1,26 @@
 <windows>
-	<window height="295" name="nyse" width="148">
-		<vertex x="17" y="182"/>
-		<vertex x="160" y="222"/>
-		<vertex x="154" y="479"/>
-		<vertex x="19" y="477"/>
+	<window height="315" name="nyse" width="144">
+		<vertex x="6" y="132"/>
+		<vertex x="150" y="132"/>
+		<vertex x="140" y="447"/>
+		<vertex x="1" y="432"/>
 	</window>
-	<window height="255" name="tokyo" width="153">
-		<vertex x="191" y="222"/>
-		<vertex x="342" y="235"/>
-		<vertex x="333" y="479"/>
-		<vertex x="180" y="477"/>
+	<window height="305" name="tokyo" width="153">
+		<vertex x="164" y="133"/>
+		<vertex x="317" y="135"/>
+		<vertex x="309" y="440"/>
+		<vertex x="160" y="433"/>
 	</window>
-	<window height="253" name="london" width="163">
-		<vertex x="361" y="228"/>
-		<vertex x="513" y="238"/>
-		<vertex x="513" y="479"/>
-		<vertex x="350" y="481"/>
+	<window height="312" name="london" width="159">
+		<vertex x="338" y="137"/>
+		<vertex x="497" y="139"/>
+		<vertex x="482" y="451"/>
+		<vertex x="326" y="440"/>
 	</window>
-	<window height="302" name="frankfurt" width="113">
-		<vertex x="525" y="179"/>
-		<vertex x="636" y="178"/>
-		<vertex x="640" y="480"/>
-		<vertex x="527" y="480"/>
+	<window height="329" name="frankfurt" width="138">
+		<vertex x="518" y="133"/>
+		<vertex x="639" y="132"/>
+		<vertex x="640" y="461"/>
+		<vertex x="502" y="453"/>
 	</window>
 </windows>
