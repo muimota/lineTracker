@@ -62,7 +62,8 @@ class ofApp : public ofBaseApp{
 
             bool displayDebug;
 
-            string eventMessage[4]={"init","init","init","init"};
+            string eventMessage[4];
+    
             //OSC
             ofxOscSender sender;
 

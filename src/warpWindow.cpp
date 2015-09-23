@@ -1,11 +1,13 @@
 #include "warpWindow.h"
 
-WarpWindow::WarpWindow():ofxCvGrayscaleImage(){
-
+WarpWindow::WarpWindow(){
+    windowMovement = 0; //Window's amount of movement
+    lineMovement   = 0; //line's amount of movement
     reset();
-};
+}
 
 void WarpWindow::reset(){
+    
     lineEnergy=0;
     bboxCount=bboxIndex=0;
     //init averages
@@ -17,6 +19,7 @@ void WarpWindow::reset(){
     status = LineEventArgs::READY;
     notifyEvent();
 }
+
 void WarpWindow::notifyEvent(){
     LineEventArgs lineEventArgs(status,lineBox,0,this);
     ofNotifyEvent(lineEvent, lineEventArgs, this);

@@ -40,8 +40,8 @@ class WarpWindow : public ofxCvGrayscaleImage{
 
         ofRectangle lineBox,startLineBox;
         int lineEnergy;
-        float windowMovement = 0; //Window's amount of movement
-        float lineMovement   = 0; //line's amount of movement
+        float windowMovement; //Window's amount of movement
+        float lineMovement  ; //line's amount of movement
 
         ofxCvContourFinder 	contourFinder;
 
@@ -61,13 +61,13 @@ class WarpWindow : public ofxCvGrayscaleImage{
 
 class LineEventArgs : public ofEventArgs {
 public:
-    static const int CANCELLED  =0;
-    static const int READY      =1;
-    static const int DETECTED   =2;
-    static const int START      =3;
-    static const int UP         =4;
-    static const int DOWN       =5;
-    static const int FINISH     =6;
+    static const int CANCELLED  = 0;
+    static const int READY      = 1;
+    static const int DETECTED   = 2;
+    static const int START      = 3;
+    static const int UP         = 4;
+    static const int DOWN       = 5;
+    static const int FINISH     = 6;
 
     WarpWindow *sender;
     int status; //detected, cancelled, update

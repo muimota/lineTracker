@@ -9,8 +9,13 @@ void ofApp::setup(){
     videoHeight = 480;
 
     //videoSource = &player;
-
+    
+    eventMessage[0] = "init";
+    eventMessage[1] = "init";
+    eventMessage[2] = "init";
+    eventMessage[3] = "init";
     //videos
+    deviceIndex = 0;
     devices = vidGrabber.listDevices();
     vidGrabber.setDeviceID(devices[deviceIndex].id);
 	vidGrabber.setDesiredFrameRate(30);
@@ -27,11 +32,11 @@ void ofApp::setup(){
     int windowEditorWidth = 600;
     //where is going to be displayed so it can be edited with the mouse
     we.displayRect.set(200,10,windowEditorWidth,windowEditorWidth*videoHeight/float(videoWidth));
+    
     //windows' events listener
     for(int i=0;i<we.windows.size();i++){
         WarpWindow *ww = we.windows[i];
         ofAddListener(ww->lineEvent, this, &ofApp::lineHandler);
-
     }
 
     //GUI
