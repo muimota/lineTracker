@@ -5,8 +5,10 @@
 #include "ofxGui.h"
 #include "ofxOsc.h"
 
-#include "warpWindow.h"
-#include "warpeditor.h"
+#include "WarpWindow.h"
+#include "WarpEditor.h"
+
+#include "ThreadedWindow.h"
 
 #define BLOB_SCALE 1000.0
 #define AVG_SIZE  10
@@ -15,59 +17,62 @@
 
 class ofApp : public ofBaseApp{
     private:
-
-            ofBaseVideoDraws  *videoSource;
-
-            ofVideoPlayer  player;
-            ofVideoGrabber vidGrabber;
-            int videoWidth;
-            int videoHeight;
-            vector<ofVideoDevice> devices;
-            int deviceIndex;
-
-
-            ofxCvColorImage videoImage;
-            ofxCvGrayscaleImage videoGrayImage;
-
-            WarpEditor      we;
-
-            ofTrueTypeFont font;
-
-            // parametoers
-            ofxPanel gui;
-            ofParameterGroup parameters;
-            ofParameterGroup windowParameters[4];
-
-
-            //Images parameters
-            ofParameter<float>  contrast[4];
-            ofParameter<float>  brightness[4];
-            ofParameter<float>  gamma[4];
-            ofParameter<bool>   threshold[4];
-            ofParameter<int>    thresholdParam[4];
-            ofParameter<bool>   adaptiveThreshold[4];
-            ofParameter<int>    adaptiveBlockSize[4];
-            ofParameter<int>    adaptiveOffset[4];
-            ofParameter<bool>   adaptiveInvert[4];
-            ofParameter<bool>   adaptiveGauss[4];
-            ofParameter<int>    dilate[4];
-            ofParameter<int>    erode[4];
-            ofParameter<int>    median[4];
-
-            ofParameter<float>  maxWindowMovement;
-            ofParameter<float>  maxLineMovement;
-
-            ofParameter<int>    minBlobArea;
-            ofParameter<int>    maxBlobArea;
-
-            bool displayDebug;
-
-            string eventMessage[4];
     
-            //OSC
-            ofxOscSender sender;
+        ofBaseVideoDraws  *videoSource;
+    
+        ofVideoPlayer  player;
+        ofVideoGrabber vidGrabber;
+        int videoWidth;
+        int videoHeight;
+        vector<ofVideoDevice> devices;
+        int deviceIndex;
+
+
+        ofxCvColorImage videoImage;
+        ofxCvGrayscaleImage videoGrayImage;
+
+        WarpEditor      we;
+
+        ofTrueTypeFont font;
+
+        // parametoers
+        ofxPanel gui;
+        ofParameterGroup parameters;
+        ofParameterGroup windowParameters[4];
+
+
+        //Images parameters
+        ofParameter<float>  contrast[4];
+        ofParameter<float>  brightness[4];
+        ofParameter<float>  gamma[4];
+        ofParameter<bool>   threshold[4];
+        ofParameter<int>    thresholdParam[4];
+        ofParameter<bool>   adaptiveThreshold[4];
+        ofParameter<int>    adaptiveBlockSize[4];
+        ofParameter<int>    adaptiveOffset[4];
+        ofParameter<bool>   adaptiveInvert[4];
+        ofParameter<bool>   adaptiveGauss[4];
+        ofParameter<int>    dilate[4];
+        ofParameter<int>    erode[4];
+        ofParameter<int>    median[4];
+    
+        ofParameter<float>  maxWindowMovement;
+        ofParameter<float>  maxLineMovement;
+
+        ofParameter<int>    minBlobArea;
+        ofParameter<int>    maxBlobArea;
+
+        bool displayDebug;
+    
+        string eventMessage[4];
+        ThreadedWindow *tw[4];
+    
+    
+        //OSC
+        ofxOscSender sender;
 
 	public:
+    
 		void setup();
 		void update();
 		void draw();

@@ -14,6 +14,9 @@ void ofApp::setup(){
     eventMessage[1] = "init";
     eventMessage[2] = "init";
     eventMessage[3] = "init";
+    
+    
+    
     //videos
     deviceIndex = 0;
     devices = vidGrabber.listDevices();
@@ -28,15 +31,17 @@ void ofApp::setup(){
     //windows
     we.setImage(videoGrayImage);
     we.loadFile("test.xml");
+    
     //set where the rectangle is going to be drawn
     int windowEditorWidth = 600;
     //where is going to be displayed so it can be edited with the mouse
     we.displayRect.set(200,10,windowEditorWidth,windowEditorWidth*videoHeight/float(videoWidth));
     
     //windows' events listener
-    for(int i=0;i<we.windows.size();i++){
+    for(int i=0;i<4;i++){
         WarpWindow *ww = we.windows[i];
         ofAddListener(ww->lineEvent, this, &ofApp::lineHandler);
+        tw[i] = new ThreadedWindow(ww);
     }
 
     //GUI
@@ -109,38 +114,37 @@ void ofApp::update(){
         videoSource->update();
         if(videoSource->isFrameNew()){
 
+            
             videoImage.setFromPixels(videoSource->getPixels(), videoSource->getWidth(),videoSource->getHeight());
             videoImage.mirror(true,false);
             videoGrayImage = videoImage;
 
             //image process
-            for(int i=0;i<we.windows.size();i++){
-                WarpWindow *ww = we.windows[i];
-
-                ww->warp();
-                ww->gamma(gamma[i]);
-                ww->brightnessContrast(brightness[i],contrast[i]);
-                int videoArea = ww->getWidth() * ww->getHeight();
-                if(threshold[i]){
-                    //normal threshold
-                    ww->threshold(thresholdParam[i]);
-                }
-                if(adaptiveThreshold[i]){
-                    //adaptive threshold
-                    ww->adaptiveThreshold(adaptiveBlockSize[i],adaptiveOffset[i],adaptiveInvert[i],adaptiveGauss[i]);
-                }
-
-                //erode
-                for(int j=0;j<erode[i];j++){
-                    ww->erode();
-                }
-                //dilate
-                for(int j=0;j<dilate[i];j++){
-                    ww->dilate();
-                }
-                ww->median(median[i]);
-                ww->findContours(minBlobArea,maxBlobArea,maxWindowMovement,maxLineMovement);
+            //this should be threaded
+            for(int i=0;i<4;i++){
+                
+                tw[i]->gamma = gamma[i];
+                tw[i]->brightness = brightness[i];
+                tw[i]->contrast = contrast[i];
+                tw[i]->threshold = threshold[i];
+                tw[i]->thresholdParam = thresholdParam[i];
+                tw[i]->erode = erode[i];
+                tw[i]->dilate = dilate[i];
+                tw[i]->median = median[i];
+                tw[i]->minBlobArea = minBlobArea;
+                tw[i]->maxBlobArea = maxBlobArea;
+                tw[i]->maxWindowMovement = maxWindowMovement;
+                tw[i]->maxLineMovement = maxLineMovement;
+                
+                tw[i]->startThread();
             }
+           
+            for(int i=0;i<4;i++){
+                
+                tw[i]->waitForThread();
+        
+            }
+        
         }
 }
 
