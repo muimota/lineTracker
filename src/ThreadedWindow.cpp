@@ -15,7 +15,7 @@ ThreadedWindow::ThreadedWindow( WarpWindow *_ww){
 void ThreadedWindow::threadedFunction(){
     
     //warp and apply effects
-    ww->warp();
+    //ww->warp();
     ww->gamma(gamma);
     ww->brightnessContrast(brightness,contrast);
     if(threshold){

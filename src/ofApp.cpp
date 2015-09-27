@@ -123,6 +123,8 @@ void ofApp::update(){
             //this should be threaded
             for(int i=0;i<4;i++){
                 
+                we.windows[i]->warp();
+                
                 tw[i]->gamma = gamma[i];
                 tw[i]->brightness = brightness[i];
                 tw[i]->contrast = contrast[i];
@@ -138,7 +140,7 @@ void ofApp::update(){
                 
                 tw[i]->startThread();
             }
-           
+            //wait for threads
             for(int i=0;i<4;i++){
                 
                 tw[i]->waitForThread();
