@@ -18,7 +18,6 @@ void ThreadedWindow::threadedFunction(){
     ww->warp();
     ww->gamma(gamma);
     ww->brightnessContrast(brightness,contrast);
-    int videoArea = ww->getWidth() * ww->getHeight();
     if(threshold){
         //normal threshold
         ww->threshold(thresholdParam);
@@ -33,7 +32,7 @@ void ThreadedWindow::threadedFunction(){
         ww->dilate();
     }
     ww->median(median);
-    //
+       //
     ww->findContours(minBlobArea,maxBlobArea,maxWindowMovement,maxLineMovement);
     
 }
