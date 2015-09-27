@@ -1,4 +1,4 @@
-#include "warpeditor.h"
+#include "WarpEditor.h"
 
 WarpEditor::WarpEditor(){
     selectedHandle = NULL;

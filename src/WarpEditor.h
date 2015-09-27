@@ -1,7 +1,7 @@
 #ifndef WARPEDITOR_H
 #define WARPEDITOR_H
 
-#include "warpWindow.h"
+#include "WarpWindow.h"
 
 class WarpEditor
 {
