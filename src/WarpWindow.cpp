@@ -30,11 +30,8 @@ void WarpWindow::allocate(int w, int h){
     //
     ofxCvGrayscaleImage::allocate(w,h);
     prevImage.allocate(w,h);
-    prevImage.setUseTexture(false);
     diffImage.allocate(w,h);
-    diffImage.setUseTexture(false);    
     floatImage.allocate(w,h);
-    floatImage.setUseTexture(false);
 
     videoArea = w*h;
 
@@ -61,7 +58,6 @@ ofxCvImage& WarpWindow::getImage(){
 void WarpWindow::warp(){
     //copy previous image into prevImage
     warpIntoMe(*origImage,srcPoints,dstPoints);
-    
 }
 
 //TODO:Should this be in warp?
@@ -223,7 +219,6 @@ void WarpWindow::draw(const ofRectangle& rect){
     float scaleY = rect.height/getHeight();
     ofRectangle rectangle = ofRectangle(rect.x+lineBox.x*scaleX,rect.y+lineBox.y*scaleY,lineBox.width*scaleX,lineBox.height*scaleY);
     ofxCvGrayscaleImage::draw(rect);
-    
     ofPushStyle();
     ofNoFill();
     ofSetColor(255,0,0,(int)ofMap(lineEnergy,0,10,50,255));

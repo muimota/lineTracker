@@ -70,7 +70,7 @@ class ofApp : public ofBaseApp{
     
         //OSC
         ofxOscSender sender;
-
+      
 	public:
     
 		void setup();

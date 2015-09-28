@@ -105,16 +105,33 @@ void ofApp::setup(){
     gui.loadFromFile("settings.xml");
     gui.setPosition(420,360);
 
+
     //osc up
     sender.setup("127.0.0.1",12000);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
+        
+	bool processedFrame = true;
+
+//if all threads have finished is considered the frame is processed
+	
+    for(int i=0;processedFrame && i<4;i++){
+	
+        processedFrame &= !tw[i]->isThreadRunning();
+	
+    }
+	
+	if(!processedFrame){
+		return;
+	}
+
         videoSource->update();
+
         if(videoSource->isFrameNew()){
 
-            
+
             videoImage.setFromPixels(videoSource->getPixels(), videoSource->getWidth(),videoSource->getHeight());
             videoImage.mirror(true,false);
             videoGrayImage = videoImage;
@@ -122,8 +139,6 @@ void ofApp::update(){
             //image process
             //this should be threaded
             for(int i=0;i<4;i++){
-                
-                we.windows[i]->warp();
                 
                 tw[i]->gamma = gamma[i];
                 tw[i]->brightness = brightness[i];
@@ -139,13 +154,9 @@ void ofApp::update(){
                 tw[i]->maxLineMovement = maxLineMovement;
                 
                 tw[i]->startThread();
-            }
-            //wait for threads
-            for(int i=0;i<4;i++){
-                
-                tw[i]->waitForThread();
-        
-            }
+	
+            }           
+      
         
         }
 }
@@ -237,7 +248,8 @@ void ofApp::lineHandler(LineEventArgs &le){
      WarpWindow *ww;
 
      //index of the
-
+	
+	cout << "line event";
      for(i=0;i<we.windows.size();i++){
         ww =we.windows[i];
         if(ww == le.sender){
